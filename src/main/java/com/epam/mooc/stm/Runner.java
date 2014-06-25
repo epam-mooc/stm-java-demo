@@ -3,7 +3,11 @@ package com.epam.mooc.stm;
 import com.epam.mooc.stm.baseline.BaselineStrategy;
 import com.epam.mooc.stm.interfaces.Account;
 import com.epam.mooc.stm.interfaces.AccountStrategy;
+import com.epam.mooc.stm.interfaces.Bank;
 import com.epam.mooc.stm.interfaces.TransactionThread;
+import com.epam.mooc.stm.stm.STMStrategy;
+import com.epam.mooc.stm.sync_account.SyncAccountStrategy;
+import com.epam.mooc.stm.sync_bank.SyncBankStrategy;
 import org.apache.commons.cli.*;
 
 import java.util.Arrays;
@@ -27,7 +31,11 @@ public class Runner {
 
     static HashMap<String, AccountStrategy> strategies = new HashMap<String, AccountStrategy>();
     static {
-        for (AccountStrategy s : Arrays.asList(new BaselineStrategy())) {
+        for (AccountStrategy s : Arrays.asList(
+                new BaselineStrategy(),
+                new SyncBankStrategy(),
+                new STMStrategy(),
+                new SyncAccountStrategy())) {
             strategies.put(s.name(), s);
         }
     }
@@ -53,11 +61,12 @@ public class Runner {
         ExecutorService service = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
         long before = System.currentTimeMillis();
 
+        Bank bank = strategy.createBank(accounts);
         for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-            service.submit(new TransactionThread(strategy.createBank(accounts)));
+            service.submit(new TransactionThread(bank));
         }
         service.shutdown();
-        service.awaitTermination(1, TimeUnit.MINUTES);
+        service.awaitTermination(5, TimeUnit.MINUTES);
 
         long after = System.currentTimeMillis();
         long sumAfter = sum(accounts);
@@ -88,7 +97,7 @@ public class Runner {
                 String numOfStr = line.getOptionValue("threads");
                 try {
                     int num = Integer.parseInt(numOfStr);
-                    if (num <= 1 || num >= 1000) throw new NumberFormatException("Should be in [1..1_000]");
+                    if (num < 1 || num > 1000) throw new NumberFormatException("Should be in [1..1_000]");
                     NUMBER_OF_THREADS = num;
                 } catch (NumberFormatException nfe) {
                     System.out.println("[WARN] " + numOfStr + " is not valid option. Using default=" + NUMBER_OF_THREADS);
@@ -100,7 +109,7 @@ public class Runner {
                 String numOfStr = line.getOptionValue("accounts");
                 try {
                     int num = Integer.parseInt(numOfStr);
-                    if (num <= 1 || num >= 1000000) throw new NumberFormatException("Should be in [1..1_000_000]");
+                    if (num < 1 || num > 1000000) throw new NumberFormatException("Should be in [1..1_000_000]");
                     NUMBER_OF_ACCOUNTS = num;
                 } catch (NumberFormatException nfe) {
                     System.out.println("[WARN] " + numOfStr + " is not valid option. Using default=" + NUMBER_OF_ACCOUNTS);
@@ -112,7 +121,7 @@ public class Runner {
                 String numOfStr = line.getOptionValue("nPerThread");
                 try {
                     long num = Long.parseLong(numOfStr);
-                    if (num <= 1 || num >= 1000000000) throw new NumberFormatException("Should be in [1..1_000_000_000]");
+                    if (num < 1 || num > 1000000000) throw new NumberFormatException("Should be in [1..1_000_000_000]");
                     NUMBER_OF_TRANSACTIONS_PER_THREAD = num;
                 } catch (NumberFormatException nfe) {
                     System.out.println("[WARN] " + numOfStr + " is not valid option. Using default=" + NUMBER_OF_TRANSACTIONS_PER_THREAD);
