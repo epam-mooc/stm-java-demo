@@ -2,7 +2,7 @@ package com.epam.mooc.stm.baseline;
 
 import com.epam.mooc.stm.interfaces.Account;
 import com.epam.mooc.stm.interfaces.AccountStrategy;
-import com.epam.mooc.stm.interfaces.AccountTransfer;
+import com.epam.mooc.stm.interfaces.Bank;
 
 /**
  * @author mishadoff
@@ -14,7 +14,12 @@ public class BaselineStrategy implements AccountStrategy {
     }
 
     @Override
-    public AccountTransfer createAccountTransaction(Account[] accounts) {
+    public Bank createBank(Account[] accounts) {
         return new BaselineTransfer(accounts);
+    }
+
+    @Override
+    public String name() {
+        return "BASELINE";
     }
 }

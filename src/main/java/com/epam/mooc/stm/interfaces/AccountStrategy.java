@@ -5,5 +5,8 @@ package com.epam.mooc.stm.interfaces;
  */
 public interface AccountStrategy {
     Account createAccount(long initialBalance);
-    AccountTransfer createAccountTransaction(Account[] accounts);
+    Bank createBank(Account[] accounts);
+
+    // system
+    String name();
 }
