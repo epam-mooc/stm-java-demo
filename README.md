@@ -8,23 +8,23 @@ Java CLI to demonstrate different strategies for concurrency
 
 Before you start, make sure you have `java` and `maven` installed
 
-1. **TODO** Build executable jar
+1. Build executable jar
 
     ```
-    mvn package
+    mvn clean package assembly:single
     ```
 
-2. **TODO** Run jar
+2. Run jar
 
     ```
-    java -jar stm-java-demo.jar
+    java -jar stm-demo.jar
     ```
 
 3. Play with options
-   - `--strategy=BASELINE`
-   - `--threads=2`
-   - `--accounts=100`
-   - `--nPerThread=100000`
+   - `-strategy=BASELINE`
+   - `-threads=2`
+   - `-accounts=100`
+   - `-nPerThread=100000`
 
 
 ## Problem description
@@ -193,7 +193,7 @@ Options: `-strategy=stm -threads=100 -accounts=1000 -nPerThread=10000000`
 [INFO] Sum before: 10000000
 [INFO] Sum after: 10000000
 [INFO] Delta: 0
-[INFO] Finished. Time elapsed: 19724 ms
+[INFO] Finished. Time elapsed: 26586 ms
 ```
 
 It just works
