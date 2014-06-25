@@ -2,19 +2,19 @@
 
 Java CLI to demonstrate different strategies for concurrency
 
-TODO: Rerun all experiments on 8-processor machine for better effect.
+**TODO** Rerun all experiments on 8-processor machine for better effect.
 
 ## Setup
 
 Before you start, make sure you have `java` and `maven` installed
 
-1. Build executable jar
+1. **TODO** Build executable jar
 
     ```
     mvn package
     ```
 
-2. Run jar
+2. **TODO** Run jar
 
     ```
     java -jar stm-java-demo.jar
@@ -24,7 +24,7 @@ Before you start, make sure you have `java` and `maven` installed
    - `--strategy=BASELINE`
    - `--threads=2`
    - `--accounts=100`
-   - `--nPerThread`=100000`
+   - `--nPerThread=100000`
 
 
 ## Problem description
@@ -198,4 +198,4 @@ Options: `-strategy=stm -threads=100 -accounts=1000 -nPerThread=10000000`
 
 It just works
 
-![http://www.mtfca.com/discus/messages/331880/359582.jpg]
+![](http://www.mtfca.com/discus/messages/331880/359582.jpg)
